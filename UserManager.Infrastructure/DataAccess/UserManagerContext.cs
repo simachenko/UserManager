@@ -42,6 +42,9 @@ namespace UserManager.Infrastructure.DataAccess
 				.ToTable("Permissions")
 				.HasMany(x => x.Users)
 				.WithMany(x => x.Permissions);
+			modelBuilder.Entity<PermissionDb>()
+				.HasData(DefaultPermissions.Permissions);
+			
 		}
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

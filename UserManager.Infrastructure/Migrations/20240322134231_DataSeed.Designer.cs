@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UserManager.Infrastructure.DataAccess;
 
@@ -11,9 +12,11 @@ using UserManager.Infrastructure.DataAccess;
 namespace UserManager.Infrastructure.Migrations
 {
     [DbContext(typeof(UserManagerContext))]
-    partial class UserManagerContextModelSnapshot : ModelSnapshot
+    [Migration("20240322134231_DataSeed")]
+    partial class DataSeed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
