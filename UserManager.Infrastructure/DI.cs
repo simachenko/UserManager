@@ -20,10 +20,8 @@ namespace UserManager
 			services.AddSingleton<IConfigureOptions<DBOptions>, UserManagerContextConfigureOptions>();
 			services.AddIdentityCore<UserDb>()
 				.AddRoles<IdentityRole>()
-				.AddEntityFrameworkStores<UserManagerContext>();
-
-				//.AddDefaultTokenProviders();
-
+				.AddEntityFrameworkStores<UserManagerContext>().AddDefaultTokenProviders();
+			services.AddDataProtection();
 			return services;
 		}
 

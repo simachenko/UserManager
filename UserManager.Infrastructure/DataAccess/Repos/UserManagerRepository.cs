@@ -60,17 +60,27 @@ namespace UserManager.Infrastructure.DataAccess.Repos
 
 		public async Task<GetUserResult> UpdateUser(UpdateUserModel request)
 		{
+			await resetPassword(request.Password, request.Id);
 			var toUpdate = _mapper.Map<UserDb>(request);
+			toUpdate.Permissions = await _context.Permissions.Where(x => request.Permissions.Contains(x.Id)).ToListAsync();
 			await _userManager.UpdateAsync(toUpdate);
-			await _userManager.ResetPasswordAsync(toUpdate,
-				await _userManager.GeneratePasswordResetTokenAsync(toUpdate),
-				request.Password);
-
+			
 			return _mapper.Map<GetUserResult>(toUpdate);
 		}
 
 
+
+
 		#region Internal funcs
+		private async Task resetPassword(string newPassword, Guid userId)
+		{
+			var updatedUser = await _userManager.FindByIdAsync(userId.ToString());
+			var token = await _userManager.GeneratePasswordResetTokenAsync(updatedUser);
+			(await _userManager.ResetPasswordAsync(updatedUser,
+				token,
+				newPassword)).ThrowIfNotSuccess();
+		}
+
 		private async Task addToRoleOrCreate(CreateUserModel request, UserDb toCreate)
 		{
 			if(await _roleManager.FindByNameAsync(request.Role) == null)
